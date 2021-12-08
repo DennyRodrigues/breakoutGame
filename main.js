@@ -80,26 +80,22 @@ function mouseMoveHandler(e) {
 }
 // When the user press the button, an event will be added to check the movement of the mouse, and change the paddle movement.
 function mouseDownHandler(e) {
-  document
-    .querySelector("#game")
-    .addEventListener("mousemove", mouseMoveHandler, true);
+ canvas.addEventListener("mousemove", mouseMoveHandler, true);
 }
 // When the user release the button, paddle movements will stop and the position of the mouse will no longer indicate the paddle movement.
 function mouseUpHandler() {
   moveRight = false;
   moveLeft = false;
-  document
-    .querySelector("#game")
+ canvas
     .removeEventListener("mousemove", mouseMoveHandler, true);
 }
 
-// Add events for when the user press and release the mouse buttons
-document
-  .querySelector("#game")
-  .addEventListener("mousedown", mouseDownHandler, false);
-document
-  .querySelector("#game")
-  .addEventListener("mouseup", mouseUpHandler, false);
+// Add events for when the user press, move and release the mouse buttons
+canvas.addEventListener("mousedown", (e) =>{
+  mouseDownHandler(e)
+  mouseMoveHandler(e)
+}, false);
+canvas.addEventListener("mouseup", mouseUpHandler, false);
 
 
 
@@ -119,28 +115,24 @@ function touchMoveHandler(e) {
   }
 }
 // When the user press the screent, an event will be added to check the movement of the touchscreen, and change the paddle movement.
-function mouseDownHandler(e) {
-  document
-    .querySelector("#game")
-    .addEventListener("touchmove", touchMoveHandler, true);
+function touchStartHandler(e) {
+ canvas.addEventListener("touchmove", touchMoveHandler, true);
 }
 
 // When the user release the screen, paddle movements will stop and the position of the touch will no longer indicate the paddle movement.
 function touchEndHandler() {
   moveRight = false;
   moveLeft = false;
-  document
-    .querySelector("#game")
-    .removeEventListener("touchmove", touchMoveHandler, true);
+ canvas.removeEventListener("touchmove", touchMoveHandler, true);
 }
 
 // Add events for when the user touch and released.
-document
-  .querySelector("#game")
-  .addEventListener("touchstart", mouseDownHandler, false);
-document
-  .querySelector("#game")
-  .addEventListener("touchend", touchEndHandler, false);
+canvas.addEventListener("touchstart", (e) =>{
+  touchStartHandler(e);
+  touchMoveHandler(e);
+}
+, false);
+canvas.addEventListener("touchend", touchEndHandler, false);
 
 
 // BALL
@@ -307,7 +299,7 @@ function drawGame() {
     }
   }
   // Check if the player won the game
-  if (score === 35) {
+  if (score === 30) {
     modalText.innerHTML = 'You Won!!'
     modal.style.display = 'flex'
     return;
