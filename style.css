@@ -45,8 +45,9 @@ body{
 }
 .layout{
   margin: 128px auto;
-  width: 90%;
   max-width: 1200px;
+  overflow: hidden;
+  
   
 }
 .title{
@@ -63,5 +64,6 @@ body{
   border: 4px solid black;
   background-color: #ddd;
   margin: auto;
+  max-width: 95%;
 
 }

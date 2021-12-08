@@ -102,7 +102,9 @@ canvas.addEventListener("mouseup", mouseUpHandler, false);
 // TOUCHPAD CONTROL
 // This will change the paddle movement the the user move the finger of the screen, this event will only be added when the user is pressing the screen button.
 function touchMoveHandler(e) {
-  let relativeX = e.clientX - canvas.offsetLeft;
+  e.preventDefault()
+  console.log(e.targetTouches[0])
+  let relativeX = e.targetTouches[0].clientX - canvas.offsetLeft;
   if (relativeX > paddleX + paddleWidth / 2) {
     moveLeft = false;
     moveRight = true;
@@ -114,25 +116,18 @@ function touchMoveHandler(e) {
     moveLeft = false;
   }
 }
-// When the user press the screent, an event will be added to check the movement of the touchscreen, and change the paddle movement.
-function touchStartHandler(e) {
- canvas.addEventListener("touchmove", touchMoveHandler, true);
-}
-
 // When the user release the screen, paddle movements will stop and the position of the touch will no longer indicate the paddle movement.
-function touchEndHandler() {
+function touchEndHandler(e) {
   moveRight = false;
   moveLeft = false;
- canvas.removeEventListener("touchmove", touchMoveHandler, true);
 }
 
 // Add events for when the user touch and released.
-canvas.addEventListener("touchstart", (e) =>{
-  touchStartHandler(e);
-  touchMoveHandler(e);
-}
-, false);
-canvas.addEventListener("touchend", touchEndHandler, false);
+canvas.addEventListener("touchstart", touchMoveHandler
+,);
+canvas.addEventListener("touchmove", touchMoveHandler
+,);
+canvas.addEventListener("touchend", touchEndHandler,);
 
 
 // BALL
@@ -328,7 +323,8 @@ function startGame() {
 
   bricks.forEach((row) => row.forEach((element) => (element.status = 1)));
   
-  document.querySelector("#game").removeEventListener("click", startGame);
+  canvas.removeEventListener("click", startGame);
+  canvas.removeEventListener("touchstart", startGame, { passive: true});
   drawGame();
 }
 
@@ -342,7 +338,8 @@ function drawStart() {
   ctx.fillText("Click with mouse to start game", 20, canvas.height / 2);
   ctx.closePath();
 
-  document.querySelector("#game").addEventListener("click", startGame);
+  canvas.addEventListener("click", startGame);
+  canvas.addEventListener("touchstart", startGame, { passive: true});
 }
 
 drawStart();
