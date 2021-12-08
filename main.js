@@ -100,6 +100,49 @@ document
 document
   .querySelector("#game")
   .addEventListener("mouseup", mouseUpHandler, false);
+
+
+
+// TOUCHPAD CONTROL
+// This will change the paddle movement the the user move the finger of the screen, this event will only be added when the user is pressing the screen button.
+function touchMoveHandler(e) {
+  let relativeX = e.clientX - canvas.offsetLeft;
+  if (relativeX > paddleX + paddleWidth / 2) {
+    moveLeft = false;
+    moveRight = true;
+  } else if (relativeX < paddleX + paddleWidth / 2) {
+    moveRight = false;
+    moveLeft = true;
+  } else {
+    moveRight = false;
+    moveLeft = false;
+  }
+}
+// When the user press the screent, an event will be added to check the movement of the touchscreen, and change the paddle movement.
+function mouseDownHandler(e) {
+  document
+    .querySelector("#game")
+    .addEventListener("touchmove", touchMoveHandler, true);
+}
+
+// When the user release the screen, paddle movements will stop and the position of the touch will no longer indicate the paddle movement.
+function touchEndHandler() {
+  moveRight = false;
+  moveLeft = false;
+  document
+    .querySelector("#game")
+    .removeEventListener("touchmove", touchMoveHandler, true);
+}
+
+// Add events for when the user touch and released.
+document
+  .querySelector("#game")
+  .addEventListener("touchstart", mouseDownHandler, false);
+document
+  .querySelector("#game")
+  .addEventListener("touchend", touchEndHandler, false);
+
+
 // BALL
 // Ball Starting position variables
 let ballX = canvas.width / 2;
@@ -130,7 +173,7 @@ const bricksProtototype = {
 };
 
 let brickRowCount = 5;
-let brickColumnCount = 7;
+let brickColumnCount = 6;
 let brickWidth = 50;
 let brickHeight = 20;
 let brickPadding = 10;
@@ -148,7 +191,7 @@ function drawBricks() {
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
       if (bricks[c][r].status == 1) {
-        let brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+        let brickX = c * (brickWidth + brickPadding) + brickOffsetLeft + 10;
         let brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
         bricks[c][r].x = brickX;
         bricks[c][r].y = brickY;
@@ -304,7 +347,7 @@ function drawStart() {
   // Start Menu
   ctx.beginPath();
   ctx.font = "28px Arial";
-  ctx.fillText("Click with the mouse to start the game", 0, canvas.height / 2);
+  ctx.fillText("Click with mouse to start game", 20, canvas.height / 2);
   ctx.closePath();
 
   document.querySelector("#game").addEventListener("click", startGame);
