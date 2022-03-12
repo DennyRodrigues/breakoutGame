@@ -13,8 +13,6 @@ const canvas = document.getElementById("game");
 /** @type {CanvasRenderingContext2D} */
 const ctx = canvas.getContext("2d");
 
-
-
 // Lives
 let lives = 3;
 function drawLives() {
@@ -45,6 +43,7 @@ let moveRight = false;
 
 // Functions handler when keys are pressed and released
 function keyDownHandler(e) {
+  e.preventDefault();
   if (e.key === "ArrowLeft") {
     moveLeft = true;
   }
@@ -53,6 +52,7 @@ function keyDownHandler(e) {
   }
 }
 function keyUpHandler(e) {
+  e.preventDefault();
   if (e.key === "ArrowLeft") {
     moveLeft = false;
   }
@@ -103,7 +103,6 @@ canvas.addEventListener("mouseup", mouseUpHandler, false);
 // This will change the paddle movement the the user move the finger of the screen, this event will only be added when the user is pressing the screen button.
 function touchMoveHandler(e) {
   e.preventDefault()
-  console.log(e.targetTouches[0])
   let relativeX = e.targetTouches[0].clientX - canvas.offsetLeft;
   if (relativeX > paddleX + paddleWidth / 2) {
     moveLeft = false;
@@ -118,16 +117,15 @@ function touchMoveHandler(e) {
 }
 // When the user release the screen, paddle movements will stop and the position of the touch will no longer indicate the paddle movement.
 function touchEndHandler(e) {
+  e.preventDefault()
   moveRight = false;
   moveLeft = false;
 }
 
 // Add events for when the user touch and released.
-canvas.addEventListener("touchstart", touchMoveHandler
-,);
-canvas.addEventListener("touchmove", touchMoveHandler
-,);
-canvas.addEventListener("touchend", touchEndHandler,);
+canvas.addEventListener("touchstart", touchMoveHandler);
+canvas.addEventListener("touchmove", touchMoveHandler);
+canvas.addEventListener("touchend", touchEndHandler);
 
 
 // BALL
